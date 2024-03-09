@@ -85,7 +85,7 @@ A Deployment's rollout is triggered if and only if the Deployment's Pod template
 
 You can change the image in the Deployment by using the following command:
 
-```
+   ```
 kubectl set image deployments\deploy_name nginx=nginx:1.25
 ```
 
@@ -95,7 +95,7 @@ At times when the deployment is not stable or we see any bugs what were not supp
 
 First, check the revisions of this Deployment using kubectl:
 
-```
+   ```
 kubectl rollout history deployments deploy_name
 ```
 
@@ -107,13 +107,13 @@ kubectl rollout undo deployments deploy_name
 
 for specific revision
 
-```
+   ```
 kubectl rollout undo deployments deploy_name --to-revision=<specific version>
 ```
 
 To check the status of the Deployment,
 
-```
+   ```
 kubectl rollout status deployments deploy_name
 ```
 
