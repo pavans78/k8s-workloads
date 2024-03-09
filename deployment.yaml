@@ -1,0 +1,27 @@
+# The Deployment it will creates the replicasets to bring up 5 nginx pods.
+# When the matchLabels in the selector have to match with the labels in the template.metedata, then only the pods will deployed.
+# Here the update strategy is Rolling Update, it defined that the maxUnavaiable is 20% and maxSurge is 20% when it is updating the deployments.
+# In this example the repicas is 5 when it is updating the maxunavaible is 20% which means out of 5 pods, one pod will be unavailable and maxSurge is 20% which means the total number of old and new Pods does not exceed 120%(6) of desired Pods.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 20%
+      maxSurge: 20%
+  selector:
+    matchLabels:
+      app: run
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: run
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+  
