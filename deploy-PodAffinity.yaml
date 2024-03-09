@@ -1,0 +1,43 @@
+#  # The Deployment it will creates the replicasets to bring up 5 nginx pods.When the matchLabels "app:run" in the selector have to match with the labels 
+# in the template.metedata "app:run", then only the pods will deployed. In addition to selector and pods will scheduled based on the pod Affinity. 
+# The scheduler can assign the Pod to any node within Zone, as long as there is at least one Pod within Zone already labeled with env=dev and preferably
+# the pods has a label tier=stg . even If a pod doesn't the label tier=stg, the scheduler still schedules the Pod.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-pa
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: run
+  template:
+    metadata:
+      labels:
+        app: run
+    spec: 
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - dev
+            topologyKey: topology.kubernetes.io/zone     
+          preferredDuringSchedulingIgnoredDuringExecution:
+         - weight: 5
+           podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - stg
+            topologyKey: topology.kubernetes.io/zone           
+      containers:
+      - name: nginx
+        image: nginx
+        

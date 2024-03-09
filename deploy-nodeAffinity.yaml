@@ -1,0 +1,41 @@
+# The Deployment it will creates the replicasets to bring up 5 nginx pods.When the matchLabels "app:run" in the selector have to match with the labels in the template.metedata "app:run", then only the pods will deployed.
+# In addition to selector and pods will scheduled based on the node Affinity. 
+# The node must have a label with the key topology.kubernetes.io/zone and the value of that label must be us-central1-b and The node preferably has a label with the key env and the value will be dev. 
+kind: Deployment
+metadata:
+  name: deploy1
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 30%
+  selector:
+    matchLabels:
+      app: run
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: run
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                - us-central1-b
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - dev
+      containers:
+      - image: nginx
+        name: nginx
