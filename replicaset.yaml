@@ -1,0 +1,19 @@
+# A ReplicaSet can be easily scaled up or down by simply updating the .spec.replicas field. 
+#The ReplicaSet controller ensures that a desired number of Pods with a matching label selector are available and operational.
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: res
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: run
+  template:
+    metadata:
+      labels:
+        app: run
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
