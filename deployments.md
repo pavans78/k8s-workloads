@@ -16,8 +16,11 @@ The following are typical use cases for Deployments in a Kubernetes are :
 Important points in this configuration:
 
 `spec.replicas` — specifies how many pods to run
+
 `strategy.type` — specifies which deployment strategy should be used. The strategy types can be `RollingUpdate` and `Recreate`.
+
         `RollingUpdate` - You can specify maxUnavailable and maxSurge to control the rolling update process.
         `Recreate` - All existing Pods are killed before new ones are created.
+        
 `spec.template.spec.containers` — specifies which container image to run in each of the pods and ports to expose.
 
