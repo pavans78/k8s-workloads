@@ -13,13 +13,14 @@ The following are typical use cases for Deployments in a Kubernetes are :
 4. Scale up the Deployment to facilitate more load. we can scale up the deployment during hours where we see huge traffic and network in/outs
 5. We can Pause the Deployment to update/apply fixes and bugs to its pod spec and then can start a new rollout for changes to reflect.
 
-Important points in this configuration:
+### Important points in this configuration:
 
 `spec.replicas` — specifies how many pods to run
 
 `strategy.type` — specifies which deployment strategy should be used. The strategy types can be `RollingUpdate` and `Recreate`.
 
         `RollingUpdate` - You can specify maxUnavailable and maxSurge to control the rolling update process.
+        
         `Recreate` - All existing Pods are killed before new ones are created.
         
 `spec.template.spec.containers` — specifies which container image to run in each of the pods and ports to expose.
